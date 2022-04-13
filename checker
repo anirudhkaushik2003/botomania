@@ -1,0 +1,69 @@
+class Game:
+    def __init__(self,state):
+        self.state = state
+        
+    # finds the next state of the board based on player
+    # player = 1 means us, player = 2 means opp
+    def update(self, move, player):
+
+        opp = 2
+        if player == 2:
+            opp = 1
+        
+        hill = self.state["hill"]
+        board = self.state["board"]
+        if hill[1] == 0:
+            hill2 = (0,14)
+            hill = hill2
+        else:
+            hill2 = (hill[0]+1,hill[1]-1)
+            hill = hill2
+
+        if player == 1:
+            if len(move) == 5:
+                x = move[0]
+                y = move[1]
+                nx = move[3]
+                ny = move[4]
+                board[y][x] = 0
+                board[ny][nx] = player
+
+            elif len(move) != 0 and len(move) !=3:
+                print("Error in length of moves tuple")
+
+        self.state = {'hill': hill, 'board': board}
+
+    
+    # finds the previous state of the board based on player
+    # player = 1 means us, player = 2 means opp
+    def undo( self,move, player):
+
+        opp = 2
+        if player == 2:
+            opp = 1
+
+        hill = self.state["hill"]
+        board = self.state["board"]
+        if hill[1] == 14:
+            hill2 = (14,0)
+            hill = hill2
+        else:
+            hill2 = (hill[0]-1,hill[1]+1)
+            hill = hill2
+        if player == 1:
+            if len(move) == 5:
+                nx = move[0]
+                ny = move[1]
+                x = move[3]
+                y = move[4]
+                board[y][x] = 0
+                board[ny][nx] = player
+
+            elif len(move) != 0 and len(move) !=3:
+                print("Error in length of undo moves tuple")
+
+        self.state = {'hill': hill, 'board': board}
+
+gamestate = {'board': [[1, 1, 1, 1, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1], [1, 1, 1, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1], [1, 1, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [1, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [0, 0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [0, 0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [0, 0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [0, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1], [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1]], 'hill': [1, 13]}
+game = Game(gamestate)
+
